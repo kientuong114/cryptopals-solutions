@@ -30,12 +30,9 @@ if __name__ == "__main__":
     unknown_len = len(cptx_0)
     for i in range(1, 100):
         cptx_1 = encryption_oracle(b'A'*i)
-        if cptx_0[-i:] == cptx_1[-i:]:
-            found_bsize = i
+        if len(cptx_1) != unknown_len:
+            found_bsize = len(cptx_1) - unknown_len
             break
-
-    if not found_bsize:
-        raise Exception("No block size found :(")
 
     cptx = encryption_oracle(b'a'*16*5)
     c = Counter([cptx[i:i+16] for i in range(0, len(cptx), 16)])
@@ -57,5 +54,3 @@ if __name__ == "__main__":
                 known += probe_ch
                 break
     print(PKCS7_unpad(known).decode())
-
-
